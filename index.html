@@ -68,11 +68,11 @@
         }
         .modal-content {
             background-color: #fefefe;
-            margin: 10% auto;
+            margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
+            width: 90%;
+            max-width: 800px;
             border-radius: 8px;
         }
         .close {
@@ -89,16 +89,11 @@
             cursor: pointer;
         }
         #employeePhoto {
-            max-width: 100%;
+            max-width: 150px;
             height: auto;
-            max-height: 200px;
-            margin-top: 10px;
             border: 3px solid #4CAF50;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
         }
         .action-buttons {
             margin-bottom: 20px;
@@ -122,9 +117,13 @@
         }
         .detail-grid {
             display: grid;
+            grid-template-columns: 1fr 150px;
+            gap: 20px;
+        }
+        .detail-info {
+            display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
-            margin-bottom: 15px;
         }
         .detail-item {
             background-color: #f9f9f9;
@@ -133,6 +132,9 @@
         }
         .detail-item-full {
             grid-column: 1 / -1;
+        }
+        .detail-re {
+            grid-column: 1 / 2;
         }
     </style>
 </head>
@@ -184,23 +186,25 @@
             <span class="close">&times;</span>
             <h2>Detalhes do Registro</h2>
             <div class="detail-grid">
-                <div class="detail-item">
-                    <strong>Nome:</strong> <span id="detailName"></span>
+                <div class="detail-info">
+                    <div class="detail-item detail-re">
+                        <strong>RE:</strong> <span id="detailRE"></span>
+                    </div>
+                    <div class="detail-item detail-item-full">
+                        <strong>Nome:</strong> <span id="detailName"></span>
+                    </div>
+                    <div class="detail-item detail-item-full">
+                        <strong>Data/Hora:</strong> <span id="detailTimestamp"></span>
+                    </div>
+                    <div class="detail-item detail-item-full">
+                        <strong>Posto:</strong> <span id="detailPosto"></span>
+                    </div>
+                    <div class="detail-item detail-item-full">
+                        <strong>Localização:</strong> <span id="detailLocation"></span>
+                    </div>
                 </div>
-                <div class="detail-item">
-                    <strong>RE:</strong> <span id="detailRE"></span>
-                </div>
-                <div class="detail-item">
-                    <strong>Data/Hora:</strong> <span id="detailTimestamp"></span>
-                </div>
-                <div class="detail-item">
-                    <strong>Posto:</strong> <span id="detailPosto"></span>
-                </div>
-                <div class="detail-item detail-item-full">
-                    <strong>Localização:</strong> <span id="detailLocation"></span>
-                </div>
+                <img id="employeePhoto" src="" alt="Foto do Colaborador">
             </div>
-            <img id="employeePhoto" src="" alt="Foto do Colaborador">
         </div>
     </div>
 
