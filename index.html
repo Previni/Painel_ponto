@@ -121,7 +121,6 @@
                     <th>RE</th>
                     <th>Nome</th>
                     <th>Posto</th>
-                    <th>Status</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -139,7 +138,6 @@
             <p><strong>RE:</strong> <span id="detailRE"></span></p>
             <p><strong>Data/Hora:</strong> <span id="detailTimestamp"></span></p>
             <p><strong>Posto:</strong> <span id="detailPosto"></span></p>
-            <p><strong>Status:</strong> <span id="detailStatus"></span></p>
             <p><strong>Localização:</strong> <span id="detailLocation"></span></p>
             <img id="employeePhoto" src="" alt="Foto do Colaborador">
         </div>
@@ -174,8 +172,7 @@
                         <td>${record.re}</td>
                         <td>${record.fullName}</td>
                         <td>${record.Posto || 'N/A'}</td>
-                        <td>${record.status || 'N/A'}</td>
-                        <td><button onclick="showDetails('${record.fullName}', '${record.re}', '${record.timestamp}', '${record.Posto || 'N/A'}', '${record.status || 'N/A'}', '${record.location}', '${record.photoData}')">Ver Detalhes</button></td>
+                        <td><button onclick="showDetails('${record.fullName}', '${record.re}', '${record.timestamp}', '${record.Posto || 'N/A'}', '${record.location}', '${record.photoData}')">Ver Detalhes</button></td>
                     `;
                 });
             } catch (error) {
@@ -184,12 +181,11 @@
             }
         }
 
-        function showDetails(name, re, timestamp, Posto, status, location, photoData) {
+        function showDetails(name, re, timestamp, Posto, location, photoData) {
             document.getElementById('detailName').textContent = name;
             document.getElementById('detailRE').textContent = re;
             document.getElementById('detailTimestamp').textContent = new Date(timestamp).toLocaleString();
             document.getElementById('detailPosto').textContent = Posto;
-            document.getElementById('detailStatus').textContent = status;
             document.getElementById('detailLocation').textContent = location;
             document.getElementById('employeePhoto').src = photoData;
             modal.style.display = "block";
