@@ -68,11 +68,11 @@
         }
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto;
+            margin: 10% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
-            max-width: 600px;
+            max-width: 500px;
             border-radius: 8px;
         }
         .close {
@@ -91,10 +91,14 @@
         #employeePhoto {
             max-width: 100%;
             height: auto;
+            max-height: 200px;
             margin-top: 10px;
             border: 3px solid #4CAF50;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         .action-buttons {
             margin-bottom: 20px;
@@ -120,11 +124,15 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
+            margin-bottom: 15px;
         }
         .detail-item {
             background-color: #f9f9f9;
             padding: 10px;
             border-radius: 4px;
+        }
+        .detail-item-full {
+            grid-column: 1 / -1;
         }
     </style>
 </head>
@@ -188,7 +196,7 @@
                 <div class="detail-item">
                     <strong>Posto:</strong> <span id="detailPosto"></span>
                 </div>
-                <div class="detail-item">
+                <div class="detail-item detail-item-full">
                     <strong>Localização:</strong> <span id="detailLocation"></span>
                 </div>
             </div>
