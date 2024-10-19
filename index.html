@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel da Empresa - Sistema de Ponto Previni</title>
+    <title>Sistema de Registro de Ponto - Previni</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -13,186 +13,142 @@
             background-color: #f0f0f0;
         }
         .container {
-            max-width: 1200px;
+            max-width: 600px;
             margin: 0 auto;
             background-color: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        h1, h2 {
+        h1 {
             color: #333;
-        }
-        .dashboard {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-        .dashboard-card {
-            background-color: #4CAF50;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 30%;
             text-align: center;
         }
-        .dashboard-card h3 {
-            margin-top: 0;
+        .form-group {
+            margin-bottom: 15px;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
+        label {
+            display: block;
+            margin-bottom: 5px;
             font-weight: bold;
         }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
+        input, button {
             width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 8px;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
             cursor: pointer;
+            font-size: 16px;
         }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        button:hover {
+            background-color: #45a049;
         }
-        #employeePhoto {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
+        #photo {
+            width: 100%;
+            height: 240px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Painel da Empresa - Sistema de Ponto Previni</h1>
+        <h1>Registro de Ponto - Previni</h1>
         
-        <div class="dashboard">
-            <div class="dashboard-card">
-                <h3>Total de Colaboradores</h3>
-                <p id="totalEmployees">50</p>
+        <form id="punchForm">
+            <div class="form-group">
+                <label for="fullName">Nome Completo:</label>
+                <input type="text" id="fullName" name="fullName" required>
             </div>
-            <div class="dashboard-card">
-                <h3>Pontos Registrados Hoje</h3>
-                <p id="todayPunches">87</p>
+            <div class="form-group">
+                <label for="re">RE (Registro de Empregado):</label>
+                <input type="text" id="re" name="re" required>
             </div>
-            <div class="dashboard-card">
-                <h3>Alertas</h3>
-                <p id="alerts">3</p>
+            <div class="form-group">
+                <label for="photo">Foto:</label>
+                <video id="video" width="100%" height="240" style="display:none;"></video>
+                <canvas id="photo" width="320" height="240"></canvas>
+                <button type="button" id="captureBtn">Capturar Foto</button>
             </div>
-        </div>
-
-        <h2>Registros de Ponto</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Data/Hora</th>
-                    <th>Nome</th>
-                    <th>RE</th>
-                    <th>Tipo</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="punchRecords">
-                <!-- Os registros serão inseridos aqui dinamicamente -->
-            </tbody>
-        </table>
-    </div>
-
-    <div id="detailModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Detalhes do Registro</h2>
-            <p><strong>Nome:</strong> <span id="detailName"></span></p>
-            <p><strong>RE:</strong> <span id="detailRE"></span></p>
-            <p><strong>Data/Hora:</strong> <span id="detailTimestamp"></span></p>
-            <p><strong>Tipo:</strong> <span id="detailType"></span></p>
-            <p><strong>Status:</strong> <span id="detailStatus"></span></p>
-            <p><strong>Localização:</strong> <span id="detailLocation"></span></p>
-            <img id="employeePhoto" src="" alt="Foto do Colaborador">
-        </div>
+            <div class="form-group">
+                <button type="submit">Registrar Ponto</button>
+            </div>
+        </form>
     </div>
 
     <script>
-        // Dados simulados de registros de ponto
-        const punchData = [
-            { timestamp: "2024-10-19 08:02:15", name: "João Silva", re: "12345", type: "Entrada", status: "No horário", location: "Escritório Central", photo: "https://example.com/photo1.jpg" },
-            { timestamp: "2024-10-19 12:00:03", name: "Maria Santos", re: "23456", type: "Saída Almoço", status: "No horário", location: "Escritório Central", photo: "https://example.com/photo2.jpg" },
-            { timestamp: "2024-10-19 13:05:22", name: "Maria Santos", re: "23456", type: "Retorno Almoço", status: "Atrasado", location: "Escritório Central", photo: "https://example.com/photo2.jpg" },
-            { timestamp: "2024-10-19 17:30:00", name: "João Silva", re: "12345", type: "Saída", status: "No horário", location: "Escritório Central", photo: "https://example.com/photo1.jpg" },
-            // Adicione mais registros conforme necessário
-        ];
+        const form = document.getElementById('punchForm');
+        const video = document.getElementById('video');
+        const photo = document.getElementById('photo');
+        const captureBtn = document.getElementById('captureBtn');
 
-        const punchRecordsBody = document.getElementById('punchRecords');
-        const modal = document.getElementById('detailModal');
-        const closeBtn = document.getElementsByClassName('close')[0];
+        // Inicializar a câmera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(err => console.error('Erro ao acessar a câmera:', err));
 
-        // Preencher a tabela com os registros
-        punchData.forEach(record => {
-            const row = punchRecordsBody.insertRow();
-            row.innerHTML = `
-                <td>${record.timestamp}</td>
-                <td>${record.name}</td>
-                <td>${record.re}</td>
-                <td>${record.type}</td>
-                <td>${record.status}</td>
-                <td><button onclick="showDetails('${record.name}', '${record.re}', '${record.timestamp}', '${record.type}', '${record.status}', '${record.location}', '${record.photo}')">Ver Detalhes</button></td>
-            `;
+        // Capturar foto
+        captureBtn.addEventListener('click', () => {
+            const context = photo.getContext('2d');
+            context.drawImage(video, 0, 0, 320, 240);
         });
 
-        function showDetails(name, re, timestamp, type, status, location, photo) {
-            document.getElementById('detailName').textContent = name;
-            document.getElementById('detailRE').textContent = re;
-            document.getElementById('detailTimestamp').textContent = timestamp;
-            document.getElementById('detailType').textContent = type;
-            document.getElementById('detailStatus').textContent = status;
-            document.getElementById('detailLocation').textContent = location;
-            document.getElementById('employeePhoto').src = photo;
-            modal.style.display = "block";
-        }
+        // Enviar dados do formulário
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        closeBtn.onclick = function() {
-            modal.style.display = "none";
-        }
+            const fullName = document.getElementById('fullName').value;
+            const re = document.getElementById('re').value;
+            const photoData = photo.toDataURL('image/jpeg');
+            const timestamp = new Date().toISOString();
 
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+            if (!fullName || !re || photoData === photo.toDataURL()) {
+                alert('Por favor, preencha todos os campos e capture uma foto.');
+                return;
             }
-        }
+
+            let location = 'Não disponível';
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+                location = `${position.coords.latitude}, ${position.coords.longitude}`;
+            } catch (err) {
+                console.error('Erro ao obter localização:', err);
+            }
+
+            const data = { fullName, re, photoData, timestamp, location };
+
+            try {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbyNyeU9Ye4swR3zI5tsLlr5C-wRph3tXeCSFssTDF9tfvbBfInrjKxZQGq1zqjrJu0h/exec', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                alert('Ponto registrado com sucesso!');
+                form.reset();
+                const context = photo.getContext('2d');
+                context.clearRect(0, 0, photo.width, photo.height);
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao enviar os dados. Por favor, tente novamente.');
+            }
+        });
     </script>
 </body>
 </html>
